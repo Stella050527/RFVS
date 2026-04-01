@@ -8,7 +8,9 @@ Unauthorized incursions by low, slow, and small unmanned aerial vehicles (UAVs) 
 To address this gap, we present RFVS, a novel multimodal benchmark dataset based on strictly synchronized vision and RF sensing. Constructed in complex real-world environments, RFVS provides 2,531 visual bounding boxes across eight commercial drone categories, aligned at the frame level with raw wideband $I/Q$ signals. Furthermore, we propose a multimodal task-decoupling strategy (1-Class Det + RF-Replace). Our evaluations demonstrate that delegating spatial detection strictly to the visual branch and fine-grained classification to the RF branch significantly mitigates feature interference, robustly improving overall detection precision and effectively reducing the background false alarm rate to 0%.
 
 ##  Overall Architecture
-![The multimodal collaborative decision architecture of RFVS, illustrating the task-decoupling and 1-Class Det + RF-Replace fusion strategy.](figs/architecture.png)
+![The multimodal collaborative decision architecture of RFVS, illustrating the task-decoupling and 1-Class Det + RF-Replace fusion strategy.](figs/architecture.png "RFVS Framework")
+Figure 1: RFVS Framework
+
 <!-- <div align="center">
 <img src="figs/architecture.png" alt="The multimodal collaborative decision architecture of RFVS, illustrating the task-decoupling and 1-Class Det + RF-Replace fusion strategy." width="600"/>
 </div> -->
