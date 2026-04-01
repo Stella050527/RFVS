@@ -50,7 +50,7 @@ The RFVS dataset was collected using a rigid dual-optical and RF acquisition pla
 
 Due to the large size of the dataset (especially the raw wideband I/Q signals sampled at 153.6 MHz), the complete dataset is hosted on Google Drive.
 
-- Download RFVS Dataset from Google Drive: [(Insert your link here)](https://drive.google.com/file/d/1ANz2rfjkWlMiWKkTb31dbqQhCApGPFtK/view?usp=drive_link)
+- Download RFVS Dataset from Google Drive: [Google Drive](https://drive.google.com/file/d/1ANz2rfjkWlMiWKkTb31dbqQhCApGPFtK/view?usp=drive_link)
 
 ### Data Preparation
 After downloading, please extract the dataset into the root directory of this repository so that the `dataset/` folder aligns with the structure shown above.
