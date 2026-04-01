@@ -1,77 +1,85 @@
-# 无人机多模态检测数据集（RFVS: UAV Multi-Modal Detection Dataset）
-A multi-modal UAV detection dataset integrating RGB images and RF signals. 一个融合视觉图像(RGB)与射频信号(RF IQ/STFT)的无人机多模态检测数据集，适用于复杂环境下的目标检测与分类研究。
+# RFVS: A Synchronized Multimodal RF-Vision Dataset for Tiny UAV Detection and Classification
+## Description
+RFVS is a synchronized multi-sensor framework and dataset that integrates visual images (RGB) and Radio Frequency (RF) signals for robust, long-range, and tiny drone (UAV) detection. This repository contains the core evaluation code, data preprocessing scripts, and the dataset necessary to reproduce the decision-level fusion results presented in our paper.
 
-欢迎来到 **RFVS** 官方代码与数据仓库！
+## Abstract
+Unauthorized incursions by low, slow, and small unmanned aerial vehicles (UAVs) pose a critical security threat. Single-sensor approaches often struggle to meet the dual requirements of spatial localization and fine-grained classification simultaneously, due to severe texture deficiency in vision at long distances and the inherent lack of spatial coordinates in RF signals.
 
-随着低空经济与无人机技术的快速发展，复杂环境下的无人机安全监管与反制变得日益重要。传统的单一模态（纯视觉或纯雷达/射频）检测方法在面临视线遮挡、恶劣天气或复杂电磁环境时往往存在局限性。为此，本项目开源了 **RFVS** 这一融合视觉图像（RGB Images）与射频信号（RF IQ Data）的同步多模态无人机数据集。
+To address this gap, we present RFVS, a novel multimodal benchmark dataset based on strictly synchronized vision and RF sensing. Constructed in complex real-world environments, RFVS provides 2,531 visual bounding boxes across eight commercial drone categories, aligned at the frame level with raw wideband $I/Q$ signals. Furthermore, we propose a multimodal task-decoupling strategy (1-Class Det + RF-Replace). Our evaluations demonstrate that delegating spatial detection strictly to the visual branch and fine-grained classification to the RF branch significantly mitigates feature interference, robustly improving overall detection precision and effectively reducing the background false alarm rate to 0%.
 
-本数据集不仅提供了丰富的无人机视觉图像及其精确的检测/分类标签，还严格帧级同步采集了对应时刻的底层射频原始 IQ 数据，并提供了将其转化为易于深度学习（CNN/ViT）模型处理的 STFT 时频图的标准代码。本项目的开源旨在为学术界和工业界提供一个高质量的基准测试平台，大力推动多模态融合、目标检测、细粒度分类以及射频信号分析等前沿深度学习任务的研究。
+## Supported Environments and Hardware Requirements
+The data processing and evaluation scripts are supported on the following environments:
 
-## 数据集结构
-完整的数据集托管在网盘中，下载解压后，目录结构如下：
+### Operating Systems
+Windows 11 / Ubuntu 22.04
+
+### Software
+- Python 3.x (for evaluation)
+- MATLAB R2020a or later (for RF I/Q data preprocessing)
+
+### Hardware Requirements
+- CPU: Standard multi-core desktop CPU
+- GPU: NVIDIA GPU (for running visual/RF model evaluation)
+
+## Repository Structure
+This repository focuses on data preprocessing and multimodal evaluation. The structure is organized as follows:
 ```
-dataset/
-├── images/            # 视觉图像数据 (RGB)
-│   ├── test/
-│   ├── train/
-│   └── val/
-├── labels/            # 目标检测标签 (格式: YOLO)
-│   ├── test/
-│   ├── train/
-│   └── val/
-├── labels-class/      # 细粒度分类标签数据
-│   ├── test/
-│   ├── train/
-│   └── val/
-└── RF_raw/            # 射频原始 IQ 采样数据 (二进制文件)
-    ├── test/
-    ├── train/
-    └── val/
+RFVS/
+├── dataset/                   # Downloaded dataset directory (see Dataset section)
+│   ├── images/                # Synchronized visual images (RGB)
+│   ├── labels/                # Spatial bounding box labels (YOLO format)
+│   ├── labels-class/          # Fine-grained UAV category labels
+│   └── RF_raw/                # Raw wideband RF I/Q sampling data (.bin)
+├── iq_to_stft.m               # Preprocessing: Converts raw IQ data to STFT spectrograms
+├── eval.py                    # Evaluation: Computes multimodal fusion metrics & custom COCO mAP
+└── README.md                  # Project documentation
 ```
 
-## 数据集下载
-由于数据集体积较大，我们将完整数据托管在了云盘上。请通过以下链接下载：
-- 百度网盘: 点击这里下载 (提取码: XXXX)
-- Google Drive / Zenodo: 备用下载链接
+## Dataset
+The RFVS dataset was collected using a rigid dual-optical and RF acquisition platform across mountains, buildings, and open sky backgrounds. It encompasses 8 commercial drone categories (e.g., DJI Air 3, DJI Mavic 3 Pro, DJI Matrice Series).
 
-下载后，请将数据集解压到项目根目录，或根据你的代码修改数据读取路径。
+Due to the large size of the dataset (especially the raw wideband I/Q signals sampled at 153.6 MHz), the complete dataset is hosted on Google Drive.
 
-## 关键代码说明
-本仓库提供 RFVS 数据集核心预处理脚本：`iq_to_stft.m`。
+- Download RFVS Dataset from Google Drive: (Insert your link here)
+- Alternative Link: Zenodo / Baidu Netdisk (Optional)
 
-原始射频数据（RF_raw）为二进制 IQ 采样点，无法直接输入深度学习网络。我们提供 MATLAB 脚本，将 RF_raw 中的 IQ 数据进行短时傅里叶变换（STFT），生成无坐标轴的纯净二维时频图，保存至 `RF_images` 目录。
+### Data Preparation
+After downloading, please extract the dataset into the root directory of this repository so that the `dataset/` folder aligns with the structure shown above.
 
-## 核心评估脚本说明：`eval.py`
-除了数据预处理，本仓库还提供了用于模型性能评估的核心 Python 脚本 `eval.py`。该脚本主要用于评估纯视觉检测模型以及视觉-射频（Vision-RF）融合模型的最终表现。
+## How to Run
+To reproduce the evaluation metrics and data processing presented in our paper, follow these steps:
 
-**其核心功能包括：**
-* **多模态融合策略**：实现了将 YOLO 的视觉预测类别替换为射频分类器预测结果的逻辑。支持多种融合模式，例如纯替换（Hard Replace）和基于置信度的门控替换（Gate），以此验证 RF 数据对视觉分类的增强效果。
-* **自定义 COCO 评估指标**：重写了标准 COCO 评估中的绝对像素面积阈值，采用无量纲的**边界框对角线长度（`diag`）**作为衡量标准，从而更合理地评估不同尺度（Small, Medium, Large）目标的检测性能。
-* **全面的指标输出**：同时计算并对比标准 COCO 的 mAP 指标以及 YOLO 风格的最佳 F1 对应的平均准确率（$mP$）和平均召回率（$mR$）。
-  
-### 环境依赖
-- MATLAB（推荐 R2020a 及以上版本）
+### 1. RF Data Preprocessing (MATLAB)
+Raw RF data (RF_raw) consists of binary I/Q samples which cannot be directly fed into CNN/ViT models. We use the Short-Time Fourier Transform (STFT) to convert these signals into 2D time-frequency spectrograms.
+1. Open `iq_to_stft.m` in MATLAB.
+2. Verify that the sampling rate is set to match the dataset (Fs = 153.6e6).
+3. Run the script. It will automatically parse the I/Q binary files, apply a Hamming window (length 1024, 512-sample overlap, 1024 FFT points), generate pure 2D spectrogram images without axes, and save them to a new `RF_images/` directory.
 
-### 使用方法
-1. 克隆本仓库到本地：
+### 2. Evaluating the Models (Python)
+We provide `eval.py` to evaluate the pure visual detection model (e.g., YOLOv11n) and the Vision-RF fusion models.
+
+#### Key Features of eval.py
+- **Fusion Strategies**: Implements the logic to replace the visual predicted category with the RF classifier's prediction. Supports Hard Replace and confidence-based RF-Gate mechanisms.
+- **RF-Veto Mechanism**: Implements the background false alarm suppression logic. If the RF branch detects no UAV signal ($z_r = 0$), the visual bounding box is discarded.
+- **Customized COCO Metrics**: To accurately characterize the minute-target distribution, we modified the COCO evaluation script. It replaces absolute pixel area with a normalized relative diagonal length ($d$) metric to calculate scale-wise precision ($mAP_{d-s}$, $mAP_{d-m}$, $mAP_{d-l}$).
+
+#### Execution
+Ensure your prediction results or model weights are properly configured in the script, then run:
+```bash
+python eval.py
 ```
-git clone https://github.com/Stella050527/RFVS.git
-```
-2. 下载 RFVS 数据集并解压，确保 `RF_raw` 目录存在。
-3. 在 MATLAB 中打开 `iq_to_stft.m`。
-4. 确认采样率 Fs = 153.6e6 与 RFVS 实际数据匹配。
-5. 运行脚本，自动解析 IQ 数据、生成 STFT 时频图并保存为 PNG。
+(You can customize the script parameters inside `eval.py` depending on whether you want to evaluate 1-Class Det, 8-Class Det, or the fused 1-Class Det + RF-Replace strategy).
 
-## 引用 (Citation)
-如果您在研究中使用了 **RFVS** 数据集或代码，请引用我们的工作：
+## Citation
+If you use the RFVS dataset or the evaluation framework in your research, please cite our paper:
 ```bibtex
 @article{YourName2026RFVS,
-  title={RFVS: A Synchronized Multimodal RF–Vision Dataset for Tiny UAV Detection and Classification},
-  author={Your Name},
-  journal={Your Journal},
+  title={RFVS: A Synchronized Multimodal RF-Vision Dataset for Tiny UAV Detection and Classification},
+  author={Your Name and Co-authors},
+  journal={Your Journal / Conference},
   year={2026}
 }
 ```
 
-## 许可证 (License)
-RFVS 数据集及代码遵循 **MIT License** 开源协议。
+## License
+The RFVS dataset and the accompanied code are released under the MIT License.
