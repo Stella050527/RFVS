@@ -7,6 +7,11 @@ Unauthorized incursions by low, slow, and small unmanned aerial vehicles (UAVs) 
 
 To address this gap, we present RFVS, a novel multimodal benchmark dataset based on strictly synchronized vision and RF sensing. Constructed in complex real-world environments, RFVS provides 2,531 visual bounding boxes across eight commercial drone categories, aligned at the frame level with raw wideband $I/Q$ signals. Furthermore, we propose a multimodal task-decoupling strategy (1-Class Det + RF-Replace). Our evaluations demonstrate that delegating spatial detection strictly to the visual branch and fine-grained classification to the RF branch significantly mitigates feature interference, robustly improving overall detection precision and effectively reducing the background false alarm rate to 0%.
 
+##  Overall Architecture
+[The multimodal collaborative decision architecture of RFVS, illustrating the task-decoupling and 1-Class Det + RF-Replace fusion strategy.](figs/architecture.pdf)
+
+
+
 ## Supported Environments and Hardware Requirements
 The data processing and evaluation scripts are supported on the following environments:
 
@@ -36,7 +41,7 @@ RFVS/
 ```
 
 ## Dataset
-The RFVS dataset was collected using a rigid dual-optical and RF acquisition platform across mountains, buildings, and open sky backgrounds. It encompasses 8 commercial drone categories (e.g., DJI Air 3, DJI Mavic 3 Pro, DJI Matrice Series).
+The RFVS dataset was collected using a rigid dual-optical and RF acquisition platform across mountains, buildings, and open sky backgrounds. It encompasses 8 commercial drone categories (e.g., DJI Air 3, DJI Mavic 3 Pro, DJI Matrice 4E).
 
 Due to the large size of the dataset (especially the raw wideband I/Q signals sampled at 153.6 MHz), the complete dataset is hosted on Google Drive.
 
@@ -83,3 +88,6 @@ If you use the RFVS dataset or the evaluation framework in your research, please
 
 ## License
 The RFVS dataset and the accompanied code are released under the MIT License.
+
+
+
