@@ -1,4 +1,4 @@
-# RFVS: A Synchronized Multimodal RF-Vision Dataset for Tiny UAV Detection and Classification
+# RFVS: A Synchronized Multimodal RF-Vision Dataset for Tiny and Fine-grained Model UAV Detection
 ## Description
 RFVS is a synchronized multi-sensor framework and dataset that integrates visual images (RGB) and Radio Frequency (RF) signals for robust, long-range, and tiny drone (UAV) detection. This repository contains the core evaluation code, data preprocessing scripts, and the dataset necessary to reproduce the decision-level fusion results presented in our paper.
 
