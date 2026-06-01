@@ -82,12 +82,7 @@ python eval.py
 ## Citation
 If you use the RFVS dataset or the evaluation framework in your research, please cite our paper:
 ```bibtex
-@article{YourName2026RFVS,
-  title={RFVS: A Synchronized Multimodal RF-Vision Dataset for Tiny UAV Detection and Classification},
-  author={Your Name and Co-authors},
-  journal={Your Journal / Conference},
-  year={2026}
-}
+
 ```
 
 ## License
